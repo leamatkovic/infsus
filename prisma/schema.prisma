@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model karta {
+  idkarta  Int    @id @default(autoincrement())
+  popust   Float?
+  razred   Int
+  idvoznja Int
+  idputnik Int
+  putnik   putnik @relation(fields: [idputnik], references: [idputnik], onDelete: NoAction, onUpdate: NoAction)
+  voznja   voznja @relation(fields: [idvoznja], references: [idvoznja], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model linija {
+  brojlinije                                 Int      @id @default(autoincrement())
+  odredisteidstanica                         Int
+  polazisteidstanica                         Int
+  stanica_linija_odredisteidstanicaTostanica stanica  @relation("linija_odredisteidstanicaTostanica", fields: [odredisteidstanica], references: [idstanica], onDelete: NoAction, onUpdate: NoAction)
+  stanica_linija_polazisteidstanicaTostanica stanica  @relation("linija_polazisteidstanicaTostanica", fields: [polazisteidstanica], references: [idstanica], onDelete: NoAction, onUpdate: NoAction)
+  voznja                                     voznja[]
+}
+
+model opcijapristupacnosti {
+  idopcijapristupacnosti Int                    @id @default(autoincrement())
+  naziv                  String                 @db.VarChar(100)
+  pristupacnoststanice   pristupacnoststanice[]
+  pristupacnostvlaka     pristupacnostvlaka[]
+}
+
+model pristupacnoststanice {
+  idopcijapristupacnosti Int
+  idstanica              Int
+  opcijapristupacnosti   opcijapristupacnosti @relation(fields: [idopcijapristupacnosti], references: [idopcijapristupacnosti], onDelete: NoAction, onUpdate: NoAction)
+  stanica                stanica              @relation(fields: [idstanica], references: [idstanica], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([idopcijapristupacnosti, idstanica])
+}
+
+model pristupacnostvlaka {
+  idopcijapristupacnosti Int
+  idvlak                 Int
+  opcijapristupacnosti   opcijapristupacnosti @relation(fields: [idopcijapristupacnosti], references: [idopcijapristupacnosti], onDelete: NoAction, onUpdate: NoAction)
+  vlak                   vlak                 @relation(fields: [idvlak], references: [idvlak], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([idopcijapristupacnosti, idvlak])
+}
+
+model putnik {
+  ime      String  @db.VarChar(100)
+  prezime  String  @db.VarChar(100)
+  pomagalo String? @db.VarChar(100)
+  idputnik Int     @id @default(autoincrement())
+  karta    karta[]
+}
+
+model stanica {
+  imestanice                                String                 @db.VarChar(100)
+  idstanica                                 Int                    @id @default(autoincrement())
+  linija_linija_odredisteidstanicaTostanica linija[]               @relation("linija_odredisteidstanicaTostanica")
+  linija_linija_polazisteidstanicaTostanica linija[]               @relation("linija_polazisteidstanicaTostanica")
+  pristupacnoststanice                      pristupacnoststanice[]
+}
+
+model vlak {
+  idvlak             Int                  @id @default(autoincrement())
+  brojmjesta         Int
+  pristupacnostvlaka pristupacnostvlaka[]
+  voznja             voznja[]
+}
+
+model voznja {
+  vrijemepolazak DateTime @db.Date
+  vrijemedolazak DateTime @db.Date
+  idvoznja       Int      @id @default(autoincrement())
+  cijenakarte    Float
+  idvlak         Int
+  brojlinije     Int
+  karta          karta[]
+  linija         linija   @relation(fields: [brojlinije], references: [brojlinije], onDelete: NoAction, onUpdate: NoAction)
+  vlak           vlak     @relation(fields: [idvlak], references: [idvlak], onDelete: NoAction, onUpdate: NoAction)
+}
