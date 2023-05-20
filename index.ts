@@ -1,16 +1,15 @@
-'use strict'
-
 /**
  * Module dependencies.
  */
 
-var express = require('express');
-var logger = require('morgan');
-var path = require('path');
-var session = require('express-session');
-var methodOverride = require('method-override');
+import express, { ErrorRequestHandler } from 'express';
+import logger from 'morgan';
+import path from 'path';
+import session from 'express-session';
+import methodOverride from 'method-override';
+import boot from './lib/boot'
 
-var app = module.exports = express();
+export const app = express();
 
 // set our default template engine to "ejs"
 // which prevents the need for using file extensions
@@ -18,17 +17,6 @@ app.set('view engine', 'ejs');
 
 // set views for error and 404 pages
 app.set('views', path.join(__dirname, 'views'));
-
-// define a custom res.message() method
-// which stores messages in the session
-app.response.message = function (msg) {
-  // reference `req.session` via the `this.req` reference
-  var sess = this.req.session;
-  // simply add the msg to an array for later
-  sess.messages = sess.messages || [];
-  sess.messages.push(msg);
-  return this;
-};
 
 // log
 if (!module.parent) app.use(logger('dev'));
@@ -51,13 +39,13 @@ app.use(methodOverride('_method'));
 
 // expose the "messages" local variable when views are rendered
 app.use(function (req, res, next) {
-  var msgs = req.session.messages || [];
+  // var msgs = req.session.messages || [];
 
   // expose "messages" local variable
-  res.locals.messages = msgs;
+  // res.locals.messages = msgs;
 
   // expose "hasMessages"
-  res.locals.hasMessages = !!msgs.length;
+  // res.locals.hasMessages = !!msgs.length;
 
   /* This is equivalent:
    res.locals({
@@ -69,19 +57,19 @@ app.use(function (req, res, next) {
   next();
   // empty or "flush" the messages so they
   // don't build up
-  req.session.messages = [];
+  // req.session.messages = [];
 });
 
 // pomoćna skripta za učitavanje kontrolera, priprema MVC okruženje
-require('./lib/boot')(app, { verbose: !module.parent });
+boot(app, { verbose: !module.parent });
 
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // log it
   if (!module.parent) console.error(err.stack);
 
   // error page
   res.status(500).render('5xx');
-});
+} as ErrorRequestHandler);
 
 // assume 404 since no middleware responded
 app.use(function (req, res, next) {
