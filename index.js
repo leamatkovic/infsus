@@ -72,7 +72,7 @@ app.use(function (req, res, next) {
   req.session.messages = [];
 });
 
-// load controllers
+// pomoćna skripta za učitavanje kontrolera, priprema MVC okruženje
 require('./lib/boot')(app, { verbose: !module.parent });
 
 app.use(function (err, req, res, next) {
