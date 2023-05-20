@@ -65,7 +65,7 @@ boot(app, { verbose: !module.parent });
 
 app.use(function (err, req, res) {
   // log it
-  if (!module.parent) console.error(err.stack);
+  if (!module.parent) console.error("stack", err.stack);
 
   // error page
   res.status(500).render('5xx');

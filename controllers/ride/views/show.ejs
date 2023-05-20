@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <title>
+        <%= ride.id %>
+    </title>
+</head>
+
+<body>
+    <h1>ID vožnje : <%= ride.id %>
+    </h1>
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Vrijeme polaska</th>
+            <th>Vrijeme dolaska</th>
+            <th>Cijena karte</th>
+            <th>Broj vlaka</th>
+        <tr>
+            <td>
+                <%= ride.id %>
+            </td>
+            <td>
+                <%= ride.departure %>
+            </td>
+            <td>
+                <%= ride.arrival %>
+            </td>
+            <td>
+                <%= ride.ticketPrice %>
+            </td>
+            <td>
+                <%= ride.train %>
+            </td>
+        </tr>
+    </table>
+    <h1>Detail table - karte</h1>
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Razred</th>
+            <th>Ime i prezime putnika</th>
+        </tr>
+        <% tickets.forEach((ticket)=> { %>
+            <tr>
+                <td>
+                    <%= ticket.id %>
+                </td>
+                <td>
+                    <%= ticket.class %>
+                </td>
+                <td>
+                    <%= ticket.passengerFullName %>
+                </td>
+            </tr>
+            <% }) %>
+    </table>
+
+</body>
+
+</html>

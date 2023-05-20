@@ -23,6 +23,8 @@ export default function (parent: any, options: any) {
     let method: "get" | "post" | "put" | "post";
     let url;
 
+    console.log(obj)
+
     // allow specifying the view engine
     if (obj.engine) app.set('view engine', obj.engine);
     app.set('views', path.join(__dirname, '..', 'controllers', name, 'views'));
