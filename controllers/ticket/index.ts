@@ -1,6 +1,6 @@
 import { getRide, getRides } from '../../db/ride';
 import { Request, Response, NextFunction } from 'express';
-import { getTicketById, getTickets, getTicketsByIdRide, updateTicket } from '../../db/ticket';
+import { addTicket, getTicketById, getTickets, getTicketsByIdRide, updateTicket } from '../../db/ticket';
 import { getPassengers } from '../../db/passenger';
 
 
@@ -13,6 +13,7 @@ export const edit = async (req: Request, res: Response, next: NextFunction) => {
 
     res.render('edit', { ticket: await ticket, passengers: await getPassengers() });
 };
+
 export const update = async (req: Request, res: Response, next: NextFunction) => {
     var newTicketData = req.body.ticket;
     var id = req.params.ticket_id;
@@ -24,5 +25,20 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
 
 
 };
+
+export const create = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('newData:', req.body);
+
+    const rideId = parseInt(req.body["ride-id"])
+
+    addTicket({
+        rideId,
+        class: parseInt(req.body.class),
+        discount: parseFloat(req.body.discount),
+        passengerId: parseInt(req.body.passenger)
+    });
+
+    res.redirect('/ride/' + rideId);
+}
 
 

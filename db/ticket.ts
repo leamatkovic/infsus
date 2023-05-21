@@ -100,3 +100,21 @@ export async function updateTicket(idTicket: number, newData: any) {
         }
     });
 }
+
+interface ICreateTicket {
+    class: number;
+    discount: number;
+    passengerId: number;
+    rideId: number;
+}
+
+export async function addTicket(payload: ICreateTicket) {
+    await prisma.karta.create({
+        data: {
+            razred: payload.class,
+            popust: payload.discount,
+            idvoznja: payload.rideId,
+            idputnik: payload.passengerId,
+        },
+    });
+}
