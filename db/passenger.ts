@@ -17,6 +17,22 @@ function passengerMapper(passenger: Prisma.putnik): IPassenger {
     };
 }
 
+export async function getPassengerById(idn: number) {
+    const passenger = await prisma.putnik.findFirst({
+        where: {
+            idputnik: idn,
+        },
+    });
+
+    return passenger && passengerMapper(passenger);
+}
+
+export async function getPassengers() {
+    const passengers = await prisma.putnik.findMany();
+
+    return passengers.map((passenger) => passengerMapper(passenger));
+}
+
 export function getPassengerFullName(passenger: Prisma.putnik) {
     return passenger?.ime + ' ' + passenger?.prezime;
 }

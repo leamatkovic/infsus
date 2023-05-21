@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/style.css">
+  <title>Edit <%= ticket.id %>
+  </title>
+</head>
+
+<body>
+  <h1>Uredi kartu id-a <%= ticket.id %>
+  </h1>
+  <form action="/ticket/<%= ticket.id %>?_method=put" method="post">
+    <label for="ticket[class]">Razred:
+      <input type="number" max="3" min="1" name="ticket[class]" value=<%=ticket.class %>>
+    </label>
+
+    <label for="ticket[passenger]">Putnik:
+      <select name="ticket[passenger]">
+        <% passengers.forEach((passenger)=> { %>
+          <option value="<%= passenger.id %>" <%=passenger.id===ticket.idPassenger ? 'selected' : '' %>>
+            <%= passenger.name %>
+              <%= passenger.surname %>
+          </option>
+          <% }) %>
+      </select>
+    </label>
+
+    <input type="submit" name="submit" value="Update">
+  </form>
+
+</body>
+
+</html>

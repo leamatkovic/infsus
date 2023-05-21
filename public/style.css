@@ -21,3 +21,11 @@ th,
 td {
   border: 1px solid black;
 }
+
+.delete-link {
+  color: red;
+}
+
+.edit-link {
+  color: green;
+}

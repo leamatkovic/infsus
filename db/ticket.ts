@@ -1,6 +1,6 @@
 import Prisma from "@prisma/client";
 import { prisma } from ".";
-import { getPassengerFullName } from "./passenger";
+import { getPassengerFullName, getPassengerById } from "./passenger";
 
 
 
@@ -21,6 +21,7 @@ interface ITicket {
     class: number;
     discount: number | null;
     passengerFullName: string;
+    idPassenger: number;
 
 }
 
@@ -29,12 +30,30 @@ function ticketMapper(ticket: Awaited<ReturnType<typeof getTicketsFromDb>>[numbe
         id: ticket.idkarta,
         class: ticket.razred,
         discount: ticket.popust,
-        passengerFullName: getPassengerFullName(ticket.putnik)
+        passengerFullName: getPassengerFullName(ticket.putnik),
+        idPassenger: ticket.putnik.idputnik
 
 
     };
 }
-prisma.karta
+
+export async function getTicketById(idTicket: number) {
+    const ticket = await prisma.karta.findUnique({
+        where: {
+            idkarta: idTicket
+        },
+        select: {
+            putnik: true,
+            popust: true,
+            razred: true,
+            idkarta: true
+        }
+    });
+
+    return ticket && ticketMapper(ticket);
+}
+
+
 export async function getTicketsByIdRide(idRide: number) {
     const tickets = await prisma.karta.findMany({
         where: {
@@ -54,7 +73,30 @@ export async function getTicketsByIdRide(idRide: number) {
 export async function getTickets() {
     const tickets = await getTicketsFromDb();
 
-    console.log({ tickets })
-
     return tickets.map((ticket) => ticketMapper(ticket));
+}
+
+export async function deleteTicketById(idTicket: number) {
+    await prisma.karta.delete({
+        where: {
+            idkarta: idTicket
+        }
+    });
+}
+
+export async function updateTicket(idTicket: number, newData: any) {
+    await prisma.karta.update({
+        where: {
+            idkarta: idTicket
+        },
+        data: {
+            razred: parseInt(newData.class),
+            putnik: {
+                connect: {
+                    idputnik: parseInt(newData.passenger) // jer je"idputnik" is the primary key u tablici putnik
+                }
+            }
+
+        }
+    });
 }
