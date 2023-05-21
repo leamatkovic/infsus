@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <title>Edit <%= ride.id %>
+    </title>
+</head>
+
+<body>
+    <h1>Uredi vožnju id-a <%= ride.id %>
+    </h1>
+    <form action="/ride/<%= ride.id %>?_method=put" method="post">
+        <div class="form-group">
+            <label for="ride[departure]">Vrijeme polaska:</label>
+            <input type="date" name="ride[departure]" value="<%= ride.departure.toISOString().split('T')[0] %>" />
+        </div>
+        <div class="form-group">
+            <label for="ride[arrival]">Vrijeme dolaska:</label>
+            <input type="date" name="ride[arrival]" value="<%= ride.arrival.toISOString().split('T')[0] %>" />
+        </div>
+        <div class="form-group">
+            <label for="ride[ticketPrice]">Cijena karte:</label>
+            <input type="number" name="ride[ticketPrice]" value="<%= ride.ticketPrice %>" step="10" />
+        </div>
+        <div class="form-group">
+            <label for="ride[train]">Broj vlaka:
+                <select name="ride[train]">
+                    <% trains.forEach((train)=> { %>
+                        <option value="<%= train.id %>" <%=train.id===ride.train ? 'selected' : '' %>>
+                            <%= train.id %>
+                        </option>
+                        <% }) %>
+                </select>
+            </label>
+        </div>
+
+        <input type="submit" name="submit" value="Update" style="background-color: green; color: white;">
+    </form>
+
+</body>
+
+</html>

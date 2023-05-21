@@ -1,6 +1,7 @@
-import { getRide, getRides } from '../../db/ride';
+import { getRide, getRides, updateRide } from '../../db/ride';
 import { Request, Response, NextFunction } from 'express';
 import { getTickets, getTicketsByIdRide, deleteTicketById } from '../../db/ticket';
+import { getTrains } from '../../db/train';
 
 
 export const engine = "ejs"
@@ -18,21 +19,18 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
     res.render('show', { ride: await ride, tickets: await tickets });
 };
 
+export const edit = async (req: Request, res: Response, next: NextFunction) => {
+    var id = req.params.ride_id;
 
-// export const deleteTicket = async (req: Request, res: Response, next: NextFunction) => {
-//     var id = req.params.ticket_id;
+    var ride = getRide(parseInt(id));
 
-//     try {
-//         await deleteTicketById(parseInt(id));
-//         res.redirect('/rides');
-//         // res.redirect('/ride/'+req.params.ride_id); // Redirect to the desired page after successful deletion
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+    res.render('edit', { ride: await ride, trains: await getTrains() });
+};
+export const update = async (req: Request, res: Response, next: NextFunction) => {
+    var newRideData = req.body.ride;
+    var id = req.params.ride_id;
 
+    updateRide(parseInt(id), newRideData);
 
-
-
-
-
+    res.redirect('/rides');
+};

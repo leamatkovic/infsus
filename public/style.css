@@ -29,3 +29,8 @@ td {
 .edit-link {
   color: green;
 }
+
+.form-group {
+  flex-direction: column;
+  margin-bottom: 10px;
+}

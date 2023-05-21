@@ -38,6 +38,27 @@ export async function getRide(idn: number) {
 
     return ride && rideMapper(ride);
 }
+
+export async function updateRide(idRide: number, newData: any) {
+    console.log('newData:', newData)
+    await prisma.voznja.update({
+        where: {
+            idvoznja: idRide
+        },
+        data: {
+            vrijemepolazak: new Date(newData.departure),
+            vrijemedolazak: new Date(newData.arrival),
+            cijenakarte: parseFloat(newData.ticketPrice),
+            vlak: {
+                connect: {
+                    idvlak: parseInt(newData.train) // jer je"idvlak" is the primary key u tablici putnik
+                }
+            }
+
+        }
+    });
+}
+
 export function getPassengerFullName(passenger: Prisma.putnik) {
     return passenger?.ime + ' ' + passenger?.prezime;
 }
