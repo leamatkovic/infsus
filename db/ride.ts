@@ -59,6 +59,14 @@ export async function updateRide(idRide: number, newData: any) {
     });
 }
 
+export async function deleteRideById(id: number) {
+    await prisma.voznja.delete({
+        where: {
+            idvoznja: id,
+        }
+    });
+}
+
 export function getPassengerFullName(passenger: Prisma.putnik) {
     return passenger?.ime + ' ' + passenger?.prezime;
 }

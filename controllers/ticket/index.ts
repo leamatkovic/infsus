@@ -1,6 +1,6 @@
 import { getRide, getRides } from '../../db/ride';
 import { Request, Response, NextFunction } from 'express';
-import { addTicket, getTicketById, getTickets, getTicketsByIdRide, updateTicket } from '../../db/ticket';
+import { addTicket, deleteTicketById, getTicketById, getTickets, getTicketsByIdRide, updateTicket } from '../../db/ticket';
 import { getPassengers } from '../../db/passenger';
 
 
@@ -22,8 +22,6 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
     console.log(newTicketData);
 
     res.redirect('/rides');
-
-
 };
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {

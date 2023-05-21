@@ -36,7 +36,11 @@
             <td>
                 <%= ride.train %>
             </td>
-            <td><a href="/ride/<%= ride.id %>/edit" class="edit-link">Uredi</a>
+            <td><a href="/ride/<%= ride.id %>/edit" class="edit-link">Uredi</a></td>
+            <td>
+                <form action="/ride/<%= ride.id %>?_method=delete" method="post">
+                    <button class="delete-button">Izbriši</button>
+                </form>
             </td>
         </tr>
     </table>

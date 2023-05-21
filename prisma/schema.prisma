@@ -13,8 +13,8 @@ model karta {
   razred   Int
   idvoznja Int
   idputnik Int
-  putnik   putnik @relation(fields: [idputnik], references: [idputnik], onDelete: NoAction, onUpdate: NoAction)
-  voznja   voznja @relation(fields: [idvoznja], references: [idvoznja], onDelete: NoAction, onUpdate: NoAction)
+  putnik   putnik @relation(fields: [idputnik], references: [idputnik], onDelete: Cascade, onUpdate: NoAction)
+  voznja   voznja @relation(fields: [idvoznja], references: [idvoznja], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model linija {
@@ -82,6 +82,6 @@ model voznja {
   idvlak         Int
   brojlinije     Int
   karta          karta[]
-  linija         linija   @relation(fields: [brojlinije], references: [brojlinije], onDelete: NoAction, onUpdate: NoAction)
-  vlak           vlak     @relation(fields: [idvlak], references: [idvlak], onDelete: NoAction, onUpdate: NoAction)
+  linija         linija   @relation(fields: [brojlinije], references: [brojlinije], onDelete: Cascade, onUpdate: NoAction)
+  vlak           vlak     @relation(fields: [idvlak], references: [idvlak], onDelete: Cascade, onUpdate: NoAction)
 }
