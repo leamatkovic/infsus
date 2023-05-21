@@ -58,7 +58,12 @@
                 <td>
                     <%= ticket.passengerFullName %>
                 </td>
-                <td><a href="/ticket/<%= ticket.id %>/edit" class="edit-link">Uredi</a>
+                <td><a href="/ticket/<%= ticket.id %>/edit" class="edit-link">Uredi</a></td>
+
+                <td>
+                    <form action="/ticket/<%= ticket.id %>?_method=delete" method="post">
+                        <button>Izbriši</button>
+                    </form>
                 </td>
             </tr>
             <% }) %>

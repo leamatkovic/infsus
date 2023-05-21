@@ -20,7 +20,7 @@ export default function (parent: any, options: any) {
     const prefix = obj.prefix || '';
     const app = express();
     let handler;
-    let method: "get" | "post" | "put" | "post";
+    let method: "get" | "post" | "put" | "post" | "delete";
     let url;
 
     // allow specifying the view engine
@@ -54,13 +54,13 @@ export default function (parent: any, options: any) {
           method = 'post';
           url = '/' + name;
           break;
-        case 'delete':
-          method = 'post';
-          url = '/' + name;
-          break;
         case 'index':
           method = 'get';
           url = '/';
+          break;
+        case 'destroy':
+          method = 'delete';
+          url = '/' + name + '/:' + name + '_id';
           break;
         default:
           /* istanbul ignore next */

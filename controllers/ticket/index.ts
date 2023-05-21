@@ -41,4 +41,10 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     res.redirect('/ride/' + rideId);
 }
 
+export const destroy = async (req: Request, res: Response, next: NextFunction) => {
+    await deleteTicketById(parseInt(req.params.ticket_id))
+
+    res.redirect('/rides');
+}
+
 
