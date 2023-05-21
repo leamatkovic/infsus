@@ -54,6 +54,10 @@ export default function (parent: any, options: any) {
           method = 'post';
           url = '/' + name;
           break;
+        case 'delete':
+          method = 'post';
+          url = '/' + name;
+          break;
         case 'index':
           method = 'get';
           url = '/';
